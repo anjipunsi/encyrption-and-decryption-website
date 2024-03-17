@@ -1,0 +1,53 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Encryption and Decryption</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Text Encryption and Decryption</h1>
+
+<h2>Encryption</h2>
+<textarea id="message" rows="4" cols="50"></textarea><br>
+<button onclick="encrypt()">Encrypt</button><br>
+<h3>Encrypted Message:</h3>
+<textarea id="encrypted_message" rows="4" cols="50" readonly></textarea>
+
+<h2>Decryption</h2>
+<textarea id="encrypted_message_decrypt" rows="4" cols="50"></textarea><br>
+<button onclick="decrypt()">Decrypt</button><br>
+<h3>Decrypted Message:</h3>
+<textarea id="decrypted_message" rows="4" cols="50" readonly></textarea>
+
+<script>
+function encrypt() {
+  var message = $("#message").val();
+  $.ajax({
+    url: "/encrypt",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({message: message}),
+    success: function(data) {
+      $("#encrypted_message").val(data.encrypted_message);
+    }
+  });
+}
+
+function decrypt() {
+  var encrypted_message = $("#encrypted_message_decrypt").val();
+  $.ajax({
+    url: "/decrypt",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({encrypted_message: encrypted_message}),
+    success: function(data) {
+      $("#decrypted_message").val(data.decrypted_message);
+    }
+  });
+}
+</script>
+</body>
+</html>
